@@ -60,9 +60,10 @@ public class DataViewModel extends BaseObservable {
         while (cursor.moveToNext()) {
             ContactModel contactModel = new ContactModel();
             contactModel.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+            contactModel.setAvatarUri(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI)));
             data.add(contactModel);
         }
-        populateData(data);
+        populateData();
     }
 
     public void tearDown() {
@@ -79,7 +80,7 @@ public class DataViewModel extends BaseObservable {
         return this.adapter;
     }
 
-    private void populateData(List<ContactModel> data) {
+    private void populateData() {
         // populate the data from the source, such as the database.
         notifyPropertyChanged(BR.data);
     }

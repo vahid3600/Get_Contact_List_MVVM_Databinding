@@ -30,6 +30,14 @@ public class ContactModel {
     private String name;
     private String avatarUri;
 
+    public String getAvatarUri() {
+        return avatarUri;
+    }
+
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
+    }
+
     public ContactModel() {
     }
 

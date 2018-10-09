@@ -33,10 +33,10 @@ import com.example.user.contactslistapp.model.ContactModel;
  */
 public class DataItemViewModel extends BaseObservable {
     private static final String TAG = DataItemViewModel.class.getSimpleName();
-    private ContactModel dataModel;
+    private ContactModel contactModel;
 
-    public DataItemViewModel(ContactModel dataModel) {
-        this.dataModel = dataModel;
+    public DataItemViewModel(ContactModel contactModel) {
+        this.contactModel = contactModel;
     }
 
     public void setUp() {
@@ -49,7 +49,11 @@ public class DataItemViewModel extends BaseObservable {
 
     @Bindable
     public String getName() {
-        Log.e(TAG, "getName: "+dataModel.getName() );
-        return !TextUtils.isEmpty(dataModel.getName()) ? dataModel.getName() : "";
+        return !TextUtils.isEmpty(contactModel.getName()) ? contactModel.getName() : "";
+    }
+
+    @Bindable
+    public String getAvatar() {
+        return !TextUtils.isEmpty(contactModel.getAvatarUri()) ? contactModel.getAvatarUri() : "";
     }
 }
