@@ -54,7 +54,9 @@ public class DataItemViewModel extends BaseObservable {
 
     @Bindable
     public String getAvatar() {
-        return !TextUtils.isEmpty(contactModel.getAvatarUri()) ? contactModel.getAvatarUri() : "";
+        String string = !TextUtils.isEmpty(contactModel.getAvatarUri()) ? contactModel.getAvatarUri() : "";
+        Log.e(TAG, "getAvatar: "+string );
+        return string;
     }
 
     @Bindable

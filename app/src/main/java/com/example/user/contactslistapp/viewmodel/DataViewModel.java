@@ -26,8 +26,6 @@ import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.provider.ContactsContract;
-import android.util.Log;
-
 
 import com.example.user.contactslistapp.BR;
 import com.example.user.contactslistapp.model.ContactModel;
@@ -35,6 +33,10 @@ import com.example.user.contactslistapp.ui.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
+import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
+import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
 
 /**
  * Created by Gregory Rasmussen on 7/26/17.
@@ -61,15 +63,37 @@ public class DataViewModel extends BaseObservable {
             ContactModel contactModel = new ContactModel();
             contactModel.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
             contactModel.setAvatarUri(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI)));
-            contactModel.setPhoneNumber(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID )));
+            String contactId =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+            while (phones.moveToNext()) {
+                String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                int type = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                switch (type) {
+                    case TYPE_HOME:
+                        contactModel.setPhoneNumber(number + "\n");
+                        break;
+                    case TYPE_MOBILE:
+                        contactModel.setPhoneNumber(number + "\n");
+                        break;
+                    case TYPE_WORK:
+                        contactModel.setPhoneNumber(number + "\n");
+                        break;
+                }
+            }
+            phones.close();
             data.add(contactModel);
         }
+
         cursor.close();
         populateData();
     }
 
     public void tearDown() {
         // perform tear down tasks, such as removing listeners
+        data.clear();
+        notifyPropertyChanged(BR.data);
     }
 
     @Bindable
