@@ -19,14 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.example.user.contactslistapp.viewmodel;
+package com.example.user.contactslistapp.ui.contactlist;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.user.contactslistapp.model.ContactModel;
+import com.example.user.contactslistapp.data.model.ContactModel;
 
 /**
  * Created by Gregory Rasmussen on 7/26/17.

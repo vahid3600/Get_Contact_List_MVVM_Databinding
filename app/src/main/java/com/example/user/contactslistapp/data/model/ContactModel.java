@@ -19,9 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.example.user.contactslistapp.model;
-
-import android.support.annotation.Nullable;
+package com.example.user.contactslistapp.data.model;
 
 /**
  * Created by Gregory Rasmussen on 7/26/17.

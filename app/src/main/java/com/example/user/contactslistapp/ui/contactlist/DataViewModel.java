@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.example.user.contactslistapp.viewmodel;
+package com.example.user.contactslistapp.ui.contactlist;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -28,8 +28,8 @@ import android.databinding.Bindable;
 import android.provider.ContactsContract;
 
 import com.example.user.contactslistapp.BR;
-import com.example.user.contactslistapp.model.ContactModel;
-import com.example.user.contactslistapp.ui.RecyclerViewAdapter;
+import com.example.user.contactslistapp.data.model.ContactModel;
+import com.example.user.contactslistapp.ui.contactlist.MainRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +43,13 @@ import static android.provider.ContactsContract.CommonDataKinds.Phone.TYPE_WORK;
  */
 public class DataViewModel extends BaseObservable {
     private static final String TAG = "DataViewModel";
-    private RecyclerViewAdapter adapter;
+    private MainRecyclerViewAdapter adapter;
     private List<ContactModel> data;
     private Context context;
 
     public DataViewModel(Context context) {
         data = new ArrayList<>();
-        adapter = new RecyclerViewAdapter();
+        adapter = new MainRecyclerViewAdapter();
         this.context = context;
     }
 
@@ -102,7 +102,7 @@ public class DataViewModel extends BaseObservable {
     }
 
     @Bindable
-    public RecyclerViewAdapter getAdapter() {
+    public MainRecyclerViewAdapter getAdapter() {
         return this.adapter;
     }
 

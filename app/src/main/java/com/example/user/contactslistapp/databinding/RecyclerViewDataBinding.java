@@ -24,14 +24,15 @@ package com.example.user.contactslistapp.databinding;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.user.contactslistapp.model.ContactModel;
-import com.example.user.contactslistapp.ui.RecyclerViewAdapter;
+import com.example.user.contactslistapp.data.model.ContactModel;
+import com.example.user.contactslistapp.ui.contactlist.MainRecyclerViewAdapter;
+
 import java.util.List;
 
 public class RecyclerViewDataBinding {
 
     @BindingAdapter({"app:adapter", "app:data"})
-    public void bind(RecyclerView recyclerView, RecyclerViewAdapter adapter, List<ContactModel> data) {
+    public void bind(RecyclerView recyclerView, MainRecyclerViewAdapter adapter, List<ContactModel> data) {
         recyclerView.setAdapter(adapter);
         adapter.updateData(data);
     }

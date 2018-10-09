@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.user.contactslistapp.viewmodel.DataItemViewModel" />
+            type="com.example.user.contactslistapp.ui.contactlist.DataItemViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

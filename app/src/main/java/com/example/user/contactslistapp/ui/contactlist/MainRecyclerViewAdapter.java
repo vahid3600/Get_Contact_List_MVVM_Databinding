@@ -1,4 +1,4 @@
-package com.example.user.contactslistapp.ui;
+package com.example.user.contactslistapp.ui.contactlist;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -12,18 +12,17 @@ import android.widget.FrameLayout;
 
 import com.example.user.contactslistapp.R;
 import com.example.user.contactslistapp.databinding.ItemContactBinding;
-import com.example.user.contactslistapp.model.ContactModel;
-import com.example.user.contactslistapp.viewmodel.DataItemViewModel;
+import com.example.user.contactslistapp.data.model.ContactModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = RecyclerViewAdapter.class.getSimpleName();
+    private static final String TAG = MainRecyclerViewAdapter.class.getSimpleName();
     private List<ContactModel> data;
 
-    public RecyclerViewAdapter() {
+    public MainRecyclerViewAdapter() {
         this.data = new ArrayList<>();
     }
 
