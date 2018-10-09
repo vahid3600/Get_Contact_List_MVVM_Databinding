@@ -61,8 +61,10 @@ public class DataViewModel extends BaseObservable {
             ContactModel contactModel = new ContactModel();
             contactModel.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
             contactModel.setAvatarUri(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI)));
+            contactModel.setPhoneNumber(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID )));
             data.add(contactModel);
         }
+        cursor.close();
         populateData();
     }
 

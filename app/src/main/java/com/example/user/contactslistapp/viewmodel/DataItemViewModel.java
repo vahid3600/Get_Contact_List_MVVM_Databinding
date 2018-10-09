@@ -56,4 +56,9 @@ public class DataItemViewModel extends BaseObservable {
     public String getAvatar() {
         return !TextUtils.isEmpty(contactModel.getAvatarUri()) ? contactModel.getAvatarUri() : "";
     }
+
+    @Bindable
+    public String getPhoneNumber() {
+        return !TextUtils.isEmpty(contactModel.getPhoneNumber()) ? contactModel.getPhoneNumber() : "";
+    }
 }

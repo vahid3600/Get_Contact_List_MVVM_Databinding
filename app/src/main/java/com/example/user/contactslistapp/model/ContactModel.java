@@ -28,6 +28,16 @@ import android.support.annotation.Nullable;
  */
 public class ContactModel {
     private String name;
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     private String avatarUri;
 
     public String getAvatarUri() {
