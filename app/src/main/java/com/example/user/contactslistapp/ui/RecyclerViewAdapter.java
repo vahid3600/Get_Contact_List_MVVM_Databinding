@@ -84,7 +84,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public void updateData(@Nullable List<ContactModel> data) {
-        Log.e(TAG, "updateData: "+data.size() );
         if (data == null || data.isEmpty()) {
             this.data.clear();
         } else {

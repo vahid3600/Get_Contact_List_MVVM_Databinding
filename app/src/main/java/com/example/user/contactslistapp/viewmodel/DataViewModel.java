@@ -81,8 +81,6 @@ public class DataViewModel extends BaseObservable {
 
     private void populateData(List<ContactModel> data) {
         // populate the data from the source, such as the database.
-        for (ContactModel contactModel : data)
-            Log.e(TAG, "populateData: "+contactModel.getName() );
         notifyPropertyChanged(BR.data);
     }
 }
