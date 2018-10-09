@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askPermissionForReadContacts() {
+        Log.e(TAG, "askPermissionForReadContacts: " );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS
                     , Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_CODE);
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        Log.e(TAG, "onRequestPermissionsResult: " );
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case READ_CONTACTS_PERMISSION_CODE:
@@ -80,12 +82,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(View view) {
+        Log.e(TAG, "initRecyclerView: " );
         RecyclerView recyclerView = view.findViewById(R.id.contacts_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), VERTICAL));
     }
 
     private View bind() {
+        Log.e(TAG, "bind: " );
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         dataViewModel = new DataViewModel(getApplicationContext());
         binding.setViewModel(dataViewModel);

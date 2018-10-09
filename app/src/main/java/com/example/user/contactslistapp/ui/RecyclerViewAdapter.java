@@ -44,13 +44,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         holder.bind();
     }
 
     @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         holder.unbind();
     }
@@ -60,28 +60,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ItemContactBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             bind();
         }
 
         void bind() {
+            Log.e(TAG, "bind: " );
             if (binding == null) {
                 binding = DataBindingUtil.bind(itemView);
             }
         }
 
         void unbind() {
+            Log.e(TAG, "unbind: " );
             if (binding != null) {
                 binding.unbind();
             }
         }
 
         void setViewModel(DataItemViewModel viewModel) {
+            Log.e(TAG, "setViewModel: " );
             if (binding != null) {
                 binding.setViewModel(viewModel);
             }
@@ -89,7 +92,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public void updateData(@Nullable List<ContactModel> data) {
-        Log.e(TAG, "updateData: "+data.size() );
+        Log.e(TAG, "updateData: " );
         if (data == null || data.isEmpty()) {
             this.data.clear();
         } else {

@@ -29,6 +29,15 @@ import android.support.annotation.Nullable;
 public class ContactModel {
     private String name;
     private String phoneNumber;
+    private String avatarUri;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -37,8 +46,6 @@ public class ContactModel {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    private String avatarUri;
 
     public String getAvatarUri() {
         return avatarUri;
@@ -49,13 +56,5 @@ public class ContactModel {
     }
 
     public ContactModel() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
