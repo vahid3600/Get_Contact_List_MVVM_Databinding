@@ -26,10 +26,11 @@ public class ContactListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportFragmentManager().beginTransaction().replace(R.id.linearlayout,ContractListFragment.newInstance())
 
 
 //        viewModel = ViewModelProviders.of(this).get(ContactListViewModel.class);
-        viewModel2 = new ContactListCustomViewModel(getApplicationContext());
+//        viewModel2 = new ContactListCustomViewModel(getApplicationContext());
 //        viewModel.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
 //            @Override
 //            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
@@ -37,36 +38,36 @@ public class ContactListActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_SHORT).show();
 //            }
 //        });
-
-        viewModel2.setToastString("This is a live string");
-
-        viewModel2.getToastString().observe(ContactListActivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        viewModel2.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
-            @Override
-            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
-                contactListAdapter.addItems(contactDBModels);
-            }
-        });
-        initRecyclerView();
+//
+//        viewModel2.setToastString("This is a live string");
+//
+//        viewModel2.getToastString().observe(ContactListActivity.this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        viewModel2.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
+//            @Override
+//            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
+//                contactListAdapter.addItems(contactDBModels);
+//            }
+//        });
+//        initRecyclerView();
 //        fetchContactList();
     }
 
-    private void fetchContactList() {
-//        viewModel.fetchContactList();
-        viewModel2.fetchContactList();
-    }
+//    private void fetchContactList() {
+////        viewModel.fetchContactList();
+//        viewModel2.fetchContactList();
+//    }
 
-    private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.contacts_recycler_view);
-        contactListAdapter = new ContactListAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(contactListAdapter);
-    }
+//    private void initRecyclerView() {
+//        RecyclerView recyclerView = findViewById(R.id.contacts_recycler_view);
+//        contactListAdapter = new ContactListAdapter();
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(contactListAdapter);
+//    }
 
 }
