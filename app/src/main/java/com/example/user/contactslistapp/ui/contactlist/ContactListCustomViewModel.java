@@ -1,6 +1,7 @@
 package com.example.user.contactslistapp.ui.contactlist;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
@@ -18,6 +19,7 @@ public class ContactListCustomViewModel implements ViewModelProvider.Factory {
 
     private static final String TAG = ContactListViewModel.class.getSimpleName();
     private final LiveData<List<ContactDBModel>> contactsList;
+    private final MutableLiveData<String> toastString;
     private ContactRepository contactRepository;
     private AppDatabase appDatabase;
     private Context context;
@@ -26,6 +28,7 @@ public class ContactListCustomViewModel implements ViewModelProvider.Factory {
         this.context = context;
         appDatabase = AppDatabase.getDatabase(context);
         contactsList = appDatabase.contactModelDao().getAllContacts();
+        toastString = new MutableLiveData<>();
         contactRepository = new ContactRepository();
     }
 
@@ -37,6 +40,14 @@ public class ContactListCustomViewModel implements ViewModelProvider.Factory {
 
     LiveData<List<ContactDBModel>> getContactsList() {
         return contactsList;
+    }
+
+    MutableLiveData<String> getToastString(){
+        return toastString;
+    }
+
+    void setToastString(String string){
+        this.toastString.setValue(string);
     }
 
     void fetchContactList() {

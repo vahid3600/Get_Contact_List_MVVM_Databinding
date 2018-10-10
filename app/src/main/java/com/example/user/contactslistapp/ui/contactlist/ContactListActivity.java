@@ -17,7 +17,8 @@ import java.util.List;
 public class ContactListActivity extends AppCompatActivity {
 
     private ContactListAdapter contactListAdapter;
-    private ContactListViewModel viewModel;
+//    private ContactListViewModel viewModel;
+    private ContactListCustomViewModel viewModel2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +28,38 @@ public class ContactListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        viewModel = ViewModelProviders.of(this).get(ContactListViewModel.class);
-        viewModel.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
+//        viewModel = ViewModelProviders.of(this).get(ContactListViewModel.class);
+        viewModel2 = new ContactListCustomViewModel(getApplicationContext());
+//        viewModel.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
+//            @Override
+//            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
+//                contactListAdapter.addItems(contactDBModels);
+//                Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        viewModel2.setToastString("This is a live string");
+
+        viewModel2.getToastString().observe(ContactListActivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel2.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
             @Override
             public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
                 contactListAdapter.addItems(contactDBModels);
-                Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_SHORT).show();
             }
         });
         initRecyclerView();
-        fetchContactList();
+//        fetchContactList();
     }
 
     private void fetchContactList() {
-        viewModel.fetchContactList();
+//        viewModel.fetchContactList();
+        viewModel2.fetchContactList();
     }
 
     private void initRecyclerView() {
