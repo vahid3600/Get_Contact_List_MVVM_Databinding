@@ -1,9 +1,11 @@
 package com.example.user.contactslistapp.ui.contactlist;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.user.contactslistapp.data.ContactRepository;
@@ -12,36 +14,41 @@ import com.example.user.contactslistapp.data.sourse.local.AppDatabase;
 
 import java.util.List;
 
-public class ContactListViewModel extends AndroidViewModel {
+public class ContactListCustomViewModel implements ViewModelProvider.Factory {
 
     private static final String TAG = ContactListViewModel.class.getSimpleName();
     private final LiveData<List<ContactDBModel>> contactsList;
     private ContactRepository contactRepository;
-
     private AppDatabase appDatabase;
+    private Context context;
 
-    public ContactListViewModel(Application application) {
-        super(application);
-
-        appDatabase = AppDatabase.getDatabase(this.getApplication());
+    public ContactListCustomViewModel(Context context) {
+        this.context = context;
+        appDatabase = AppDatabase.getDatabase(context);
         contactsList = appDatabase.contactModelDao().getAllContacts();
         contactRepository = new ContactRepository();
+    }
+
+    @NonNull
+    @Override
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        return null;
     }
 
     LiveData<List<ContactDBModel>> getContactsList() {
         return contactsList;
     }
 
-    public void deleteContactsList(List<ContactDBModel> contactsList) {
-
-        new deleteAsyncTask(appDatabase).execute(contactsList);
-    }
-
     void fetchContactList() {
-        List<ContactDBModel> contactsList = contactRepository.fetchContactsList(getApplication().getApplicationContext());
+        List<ContactDBModel> contactsList = contactRepository.fetchContactsList(context);
         Log.e(TAG, "fetchContactList: " + contactsList.size());
         new addAsyncTask(appDatabase).execute(contactsList);
 
+    }
+
+    public void deleteContactsList(List<ContactDBModel> contactsList) {
+
+        new deleteAsyncTask(appDatabase).execute(contactsList);
     }
 
     private static class addAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {
@@ -65,6 +72,7 @@ public class ContactListViewModel extends AndroidViewModel {
 
     private static class deleteAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {
 
+    private AppDatabase appDatabase;
         private AppDatabase db;
 
         deleteAsyncTask(AppDatabase appDatabase) {

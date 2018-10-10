@@ -19,7 +19,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     private List<ContactDBModel> contactsList;
 
-    public ContactListAdapter() {
+    ContactListAdapter() {
         contactsList = new ArrayList<>();
     }
 
@@ -40,7 +40,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         return contactsList.size();
     }
 
-    public void addItems(List<ContactDBModel> contactsList) {
+    void addItems(List<ContactDBModel> contactsList) {
         this.contactsList = contactsList;
         notifyDataSetChanged();
     }
@@ -51,12 +51,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         private TextView phoneTextView;
         private ImageView avatarImageView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameTextView = (TextView) itemView.findViewById(R.id.contact_name);
-            phoneTextView = (TextView) itemView.findViewById(R.id.contact_phone);
-            avatarImageView = (ImageView) itemView.findViewById(R.id.contact_avatar);
+            nameTextView = itemView.findViewById(R.id.contact_name);
+            phoneTextView = itemView.findViewById(R.id.contact_phone);
+            avatarImageView = itemView.findViewById(R.id.contact_avatar);
         }
 
         void onBind(ContactDBModel contactDBModel) {
