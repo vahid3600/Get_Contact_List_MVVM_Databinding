@@ -3,6 +3,7 @@ package com.example.user.contactslistapp.ui.contactlist;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,20 +13,22 @@ import com.example.user.contactslistapp.data.sourse.local.AppDatabase;
 
 import java.util.List;
 
-public class ContactListViewModel extends AndroidViewModel {
+public class ContactListAndroidViewModel extends AndroidViewModel {
 
-    private static final String TAG = ContactListViewModel.class.getSimpleName();
+    private final MutableLiveData<String> toastString;
+    private static final String TAG = ContactListAndroidViewModel.class.getSimpleName();
     private final LiveData<List<ContactDBModel>> contactsList;
     private ContactRepository contactRepository;
 
     private AppDatabase appDatabase;
 
-    public ContactListViewModel(Application application) {
+    public ContactListAndroidViewModel(Application application) {
         super(application);
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());
         contactsList = appDatabase.contactModelDao().getAllContacts();
-        contactRepository = new ContactRepository();
+        toastString = new MutableLiveData<>();
+        contactRepository = new ContactRepository(getApplication().getApplicationContext());
     }
 
     LiveData<List<ContactDBModel>> getContactsList() {
@@ -38,7 +41,9 @@ public class ContactListViewModel extends AndroidViewModel {
     }
 
     void fetchContactList() {
-        List<ContactDBModel> contactsList = contactRepository.fetchContactsList(getApplication().getApplicationContext());
+        if (contactRepository.getContactSizeFromDB() == contactRepository.fetchContactsList().size())
+            return;
+        List<ContactDBModel> contactsList = contactRepository.fetchContactsList();
         Log.e(TAG, "fetchContactList: " + contactsList.size());
         new addAsyncTask(appDatabase).execute(contactsList);
 
@@ -61,6 +66,14 @@ public class ContactListViewModel extends AndroidViewModel {
             return null;
         }
 
+    }
+
+    MutableLiveData<String> getToastString() {
+        return toastString;
+    }
+
+    void setToastString(String string) {
+        this.toastString.setValue(string);
     }
 
     private static class deleteAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {

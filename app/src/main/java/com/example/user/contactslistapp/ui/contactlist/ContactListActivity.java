@@ -1,73 +1,43 @@
 package com.example.user.contactslistapp.ui.contactlist;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.user.contactslistapp.R;
-import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
-import java.util.List;
 
 public class ContactListActivity extends AppCompatActivity {
 
-    private ContactListAdapter contactListAdapter;
-//    private ContactListViewModel viewModel;
-    private ContactListCustomViewModel viewModel2;
+    public static boolean isInGridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        Button goNextLayout = findViewById(R.id.go_to_next_layout);
+        final ContractListFragment listFragment = ContractListFragment.newInstance();
+        final ContractGridListFragment gridListFragment = ContractGridListFragment.newInstance();
         setSupportActionBar(toolbar);
-        getSupportFragmentManager().beginTransaction().replace(R.id.linearlayout,ContractListFragment.newInstance())
-
-
-//        viewModel = ViewModelProviders.of(this).get(ContactListViewModel.class);
-//        viewModel2 = new ContactListCustomViewModel(getApplicationContext());
-//        viewModel.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
-//            @Override
-//            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
-//                contactListAdapter.addItems(contactDBModels);
-//                Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        viewModel2.setToastString("This is a live string");
-//
-//        viewModel2.getToastString().observe(ContactListActivity.this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        viewModel2.getContactsList().observe(ContactListActivity.this, new Observer<List<ContactDBModel>>() {
-//            @Override
-//            public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
-//                contactListAdapter.addItems(contactDBModels);
-//            }
-//        });
-//        initRecyclerView();
-//        fetchContactList();
+        replaceFragment(listFragment);
+        goNextLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isInGridLayout)
+                    replaceFragment(listFragment);
+                else replaceFragment(gridListFragment);
+            }
+        });
     }
 
-//    private void fetchContactList() {
-////        viewModel.fetchContactList();
-//        viewModel2.fetchContactList();
-//    }
-
-//    private void initRecyclerView() {
-//        RecyclerView recyclerView = findViewById(R.id.contacts_recycler_view);
-//        contactListAdapter = new ContactListAdapter();
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(contactListAdapter);
-//    }
-
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.framelayout, fragment)
+                .commit();
+    }
 }

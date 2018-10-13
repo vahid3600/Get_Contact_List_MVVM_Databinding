@@ -6,7 +6,6 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.user.contactslistapp.data.model.ContactModel;
 import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
 
 import java.util.List;
@@ -16,6 +15,9 @@ public interface ContactModelDao {
 
     @Query("select * from ContactDBModel")
     LiveData<List<ContactDBModel>> getAllContacts();
+
+    @Query("select count(*) from ContactDBModel")
+    int getContactsSizeDB();
 
     @Insert
     void addContact(List<ContactDBModel> contactDBModel);

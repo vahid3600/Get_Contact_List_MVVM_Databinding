@@ -2,15 +2,13 @@ package com.example.user.contactslistapp.ui.contactlist;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,38 +20,37 @@ import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
 
 import java.util.List;
 
-public class ContractListFragment extends Fragment {
+public class ContractGridListFragment extends Fragment {
 
-    public static final String TAG = ContractListFragment.class.getSimpleName();
+    public static final String TAG = ContractGridListFragment.class.getSimpleName();
     RecyclerView recyclerView;
     private ContactListAdapter contactListAdapter;
     private ContactListAndroidViewModel viewModel1;
-    private ContactListCustomViewModel viewModel2;
+//    private ContactListCustomViewModel viewModel2;
 
-    public ContractListFragment() {
+    public ContractGridListFragment() {
         // Required empty public constructor
     }
 
-    public static ContractListFragment newInstance() {
-        
+    public static ContractGridListFragment newInstance() {
         Bundle args = new Bundle();
-        
-        ContractListFragment fragment = new ContractListFragment();
+        ContractGridListFragment fragment = new ContractGridListFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e(TAG, "onCreateView: " );
+        Log.e(TAG, "onCreateView: ");
+//        return super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_contract_list, container,
                 false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.e(TAG, "onViewCreated: " );
+        Log.e(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.contacts_recycler_view);
         initRecyclerView();
@@ -64,7 +61,7 @@ public class ContractListFragment extends Fragment {
         viewModel1.getToastString().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                Toast.makeText(getContext(),s,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -80,12 +77,13 @@ public class ContractListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: " );
-        }
+        Log.e(TAG, "onCreate: ");
+    }
 
     private void initRecyclerView() {
         contactListAdapter = new ContactListAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(
+                getContext(), 2, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(contactListAdapter);
     }
 
@@ -93,19 +91,19 @@ public class ContractListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.e(TAG, "onStart: " );
-        ContactListActivity.isInGridLayout = false;
+        Log.e(TAG, "onStart: ");
+        ContactListActivity.isInGridLayout = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e(TAG, "onPause: " );
+        Log.e(TAG, "onPause: ");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(TAG, "onStop: " );
+        Log.e(TAG, "onStop: ");
     }
 }

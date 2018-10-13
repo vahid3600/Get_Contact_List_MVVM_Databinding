@@ -1,10 +1,13 @@
 package com.example.user.contactslistapp.data;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
 import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
+import com.example.user.contactslistapp.data.sourse.local.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,15 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.TYPE_WOR
 
 public class ContactRepository {
 
-    public List<ContactDBModel> fetchContactsList(Context context) {
+    private AppDatabase appDatabase;
+    private Context context;
+
+    public ContactRepository(Context context) {
+        this.context = context;
+        appDatabase = AppDatabase.getDatabase(context);
+    }
+
+    public List<ContactDBModel> fetchContactsList() {
         List<ContactDBModel> contactsList = new ArrayList<>();
         Cursor cursor = context.getContentResolver()
                 .query(ContactsContract.Contacts.CONTENT_URI,
@@ -59,5 +70,59 @@ public class ContactRepository {
 
         cursor.close();
         return contactsList;
+    }
+
+    public void insertContactsToDB(List<ContactDBModel> contactsList) {
+        new addAsyncTask(appDatabase).execute(contactsList);
+    }
+
+    public void deleteContactsFromDB(List<ContactDBModel> contactsList){
+        new deleteAsyncTask(appDatabase).execute(contactsList);
+    }
+
+    public int getContactSizeFromDB(){
+        return appDatabase.contactModelDao().getContactsSizeDB();
+    }
+
+    public LiveData<List<ContactDBModel>> getContactsLiveData(){
+        return appDatabase.contactModelDao().getAllContacts();
+    }
+
+    private static class addAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {
+
+        private AppDatabase db;
+
+        addAsyncTask(AppDatabase appDatabase) {
+            db = appDatabase;
+        }
+
+        @SafeVarargs
+        @Override
+        protected final Void doInBackground(final List<ContactDBModel>... params) {
+            for (List<ContactDBModel> param : params) {
+                db.contactModelDao().addContact(param);
+            }
+            return null;
+        }
+
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {
+
+        private AppDatabase appDatabase;
+        private AppDatabase db;
+
+        deleteAsyncTask(AppDatabase appDatabase) {
+            db = appDatabase;
+        }
+
+        @SafeVarargs
+        @Override
+        protected final Void doInBackground(final List<ContactDBModel>... params) {
+            for (List<ContactDBModel> param : params) {
+                db.contactModelDao().deleteContact(param);
+            }
+            return null;
+        }
     }
 }
