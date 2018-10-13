@@ -13,35 +13,27 @@ import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
 
 import java.util.List;
 
-public class ContactListCustomViewModel implements ViewModelProvider.Factory {
+public class ContactListViewModel extends ViewModel {
 
     private static final String TAG = ContactListAndroidViewModel.class.getSimpleName();
 
     private final MutableLiveData<String> toastString;
     private ContactRepository contactRepository;
-    private Context context;
 
-    public ContactListCustomViewModel(Context context) {
-        this.context = context;
+    public ContactListViewModel(Context context) {
         toastString = new MutableLiveData<>();
         contactRepository = new ContactRepository(context);
-    }
-
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return null;
     }
 
     LiveData<List<ContactDBModel>> getContactsList() {
         return contactRepository.getContactsLiveData();
     }
 
-    MutableLiveData<String> getToastString(){
+    MutableLiveData<String> getToastString() {
         return toastString;
     }
 
-    void setToastString(String string){
+    void setToastString(String string) {
         this.toastString.setValue(string);
     }
 
