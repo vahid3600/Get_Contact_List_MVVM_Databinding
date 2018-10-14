@@ -42,7 +42,6 @@ public class ContractGridListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e(TAG, "onCreateView: ");
-//        return super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_contract_list, container,
                 false);
     }
@@ -53,9 +52,9 @@ public class ContractGridListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.contacts_recycler_view);
         initRecyclerView();
-        viewModel = ViewModelProviders.of(this, new ContactListFactory(getActivity())).get(ContactListViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity(), new ContactListFactory(getActivity())).get(ContactListViewModel.class);
 
-        viewModel.getToastString().observe(this, new Observer<String>() {
+        viewModel.getString().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Toast.makeText(getContext(),s,Toast.LENGTH_SHORT).show();
@@ -87,7 +86,6 @@ public class ContractGridListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e(TAG, "onStart: ");
-        ContactListActivity.isInGridLayout = true;
     }
 
     @Override

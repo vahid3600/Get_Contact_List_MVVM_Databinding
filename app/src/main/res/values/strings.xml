@@ -5,4 +5,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_contact_list">ContactListActivity</string>
     <string name="next_layout">Go to next layout</string>
+    <string name="no_access_cotacts">You Have No Access To Read Contacts</string>
 </resources>

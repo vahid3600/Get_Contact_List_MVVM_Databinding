@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.user.contactslistapp.data.ContactRepository;
 import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
+import com.example.user.contactslistapp.data.sourse.local.SingleEventLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,12 @@ public class ContactListViewModel extends ViewModel {
 
     private static final String TAG = ContactListAndroidViewModel.class.getSimpleName();
 
+    private final SingleEventLiveData<String> string;
     private final MutableLiveData<String> toastString;
     private ContactRepository contactRepository;
 
     public ContactListViewModel(Context context) {
+        string = new SingleEventLiveData<>();
         toastString = new MutableLiveData<>();
         contactRepository = new ContactRepository(context);
     }
@@ -30,23 +33,20 @@ public class ContactListViewModel extends ViewModel {
         return contactRepository.getContactsLiveData();
     }
 
-    MutableLiveData<String> getToastString() {
-        return toastString;
+//    MutableLiveData<String> getToastString() {
+//        return toastString;
+//    }
+
+    SingleEventLiveData<String> getString() {
+        return string;
     }
 
-    void setToastString(String string){
-        this.toastString.setValue(string);
+    void setToastString(String string) {
+        this.string.setValue(string);
+//        this.toastString.setValue(string);
     }
 
     void fetchAndInsertContactListIntoDB() {
-//        List<ContactDBModel> contactsList = new ArrayList<>();
         contactRepository.insertContactsToDB(contactRepository.fetchContactsList());
-//        for (ContactDBModel contact: contactRepository.fetchContactsList())
-//        {
-//            if (!contactRepository.checkContactIsInDB(contact.contactName,contact.contactPhone))
-//                contactsList.add(contact);
-//        }
-//        Log.e(TAG, "fetchContactList: " + contactsList.size());
-//        contactRepository.insertContactsToDB(contactsList);
     }
 }

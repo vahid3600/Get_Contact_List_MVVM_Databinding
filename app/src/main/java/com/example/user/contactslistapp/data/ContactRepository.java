@@ -87,8 +87,8 @@ public class ContactRepository {
     }
 
     public boolean checkContactIsInDB(String contactName, String contactPhone) {
-        for (int id : appDatabase.contactModelDao().checkContactName(contactName))
-            if (appDatabase.contactModelDao().getContactPhone(id).equals(contactPhone))
+        for (ContactDBModel contactDBModel : appDatabase.contactModelDao().getContactsList(contactName))
+            if (contactDBModel.contactPhone.equals(contactPhone))
                 return true;
         return false;
     }
