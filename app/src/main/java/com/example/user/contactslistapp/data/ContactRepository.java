@@ -45,7 +45,7 @@ public class ContactRepository {
                     cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
             Cursor phones = context.getContentResolver().
                     query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
                             null,
                             null);
             while (phones.moveToNext()) {
@@ -72,19 +72,28 @@ public class ContactRepository {
         return contactsList;
     }
 
-    public void insertContactsToDB(List<ContactDBModel> contactsList) {
+    public void insertContactsToDB(List<ContactDBModel> contactsDBList) {
+        List<ContactDBModel> contactsList = new ArrayList<>();
+        for (ContactDBModel contact: contactsDBList)
+        {
+            if (!checkContactIsInDB(contact.contactName,contact.contactPhone))
+                contactsList.add(contact);
+        }
         new addAsyncTask(appDatabase).execute(contactsList);
     }
 
-    public void deleteContactsFromDB(List<ContactDBModel> contactsList){
+    public void deleteContactsFromDB(List<ContactDBModel> contactsList) {
         new deleteAsyncTask(appDatabase).execute(contactsList);
     }
 
-    public int getContactSizeFromDB(){
-        return appDatabase.contactModelDao().getContactsSizeDB();
+    public boolean checkContactIsInDB(String contactName, String contactPhone) {
+        for (int id : appDatabase.contactModelDao().checkContactName(contactName))
+            if (appDatabase.contactModelDao().getContactPhone(id).equals(contactPhone))
+                return true;
+        return false;
     }
 
-    public LiveData<List<ContactDBModel>> getContactsLiveData(){
+    public LiveData<List<ContactDBModel>> getContactsLiveData() {
         return appDatabase.contactModelDao().getAllContacts();
     }
 

@@ -2,15 +2,12 @@ package com.example.user.contactslistapp.ui.contactlist;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +24,7 @@ public class ContractListFragment extends Fragment {
     public static final String TAG = ContractListFragment.class.getSimpleName();
     RecyclerView recyclerView;
     private ContactListAdapter contactListAdapter;
-    private ContactListAndroidViewModel viewModel1;
-    private ContactListCustomViewModel viewModel2;
-    private ContactListViewModel viewModel3;
+    private ContactListViewModel viewModel;
 
     public ContractListFragment() {
         // Required empty public constructor
@@ -58,24 +53,23 @@ public class ContractListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.contacts_recycler_view);
         initRecyclerView();
-//        viewModel1 = ViewModelProviders.of(this).get(ContactListAndroidViewModel.class);
-        viewModel2 = new ContactListCustomViewModel(getActivity());
-        viewModel2.setToastString("This is a live string");
+        viewModel = ViewModelProviders.of(this, new ContactListFactory(getActivity())).get(ContactListViewModel.class);
+        viewModel.setToastString("This is a live string");
 
-        viewModel2.getToastString().observe(this, new Observer<String>() {
+        viewModel.getToastString().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Toast.makeText(getContext(),s,Toast.LENGTH_SHORT).show();
             }
         });
 
-        viewModel2.getContactsList().observe(this, new Observer<List<ContactDBModel>>() {
+        viewModel.getContactsList().observe(this, new Observer<List<ContactDBModel>>() {
             @Override
             public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
                 contactListAdapter.addItems(contactDBModels);
             }
         });
-        viewModel2.fetchContactList();
+        viewModel.fetchAndInsertContactListIntoDB();
     }
 
     @Override

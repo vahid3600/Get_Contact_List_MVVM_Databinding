@@ -11,6 +11,7 @@ import com.example.user.contactslistapp.data.ContactRepository;
 import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
 import com.example.user.contactslistapp.data.sourse.local.AppDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListAndroidViewModel extends AndroidViewModel {
@@ -41,12 +42,14 @@ public class ContactListAndroidViewModel extends AndroidViewModel {
     }
 
     void fetchContactList() {
-        if (contactRepository.getContactSizeFromDB() == contactRepository.fetchContactsList().size())
-            return;
-        List<ContactDBModel> contactsList = contactRepository.fetchContactsList();
+        List<ContactDBModel> contactsList = new ArrayList<>();
+        for (ContactDBModel contact: contactRepository.fetchContactsList())
+        {
+            if (!contactRepository.checkContactIsInDB(contact.contactName,contact.contactPhone))
+                contactsList.add(contact);
+        }
         Log.e(TAG, "fetchContactList: " + contactsList.size());
-        new addAsyncTask(appDatabase).execute(contactsList);
-
+        contactRepository.insertContactsToDB(contactsList);
     }
 
     private static class addAsyncTask extends AsyncTask<List<ContactDBModel>, Void, Void> {

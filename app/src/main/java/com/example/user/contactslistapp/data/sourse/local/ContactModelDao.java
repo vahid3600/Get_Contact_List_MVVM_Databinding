@@ -16,8 +16,14 @@ public interface ContactModelDao {
     @Query("select * from ContactDBModel")
     LiveData<List<ContactDBModel>> getAllContacts();
 
-    @Query("select count(*) from ContactDBModel")
-    int getContactsSizeDB();
+    @Query("select id from ContactDBModel where contactName = :contactName")
+    List<Integer> checkContactName(String contactName);
+
+    @Query("select contactPhone from ContactDBModel where id = :id")
+    String getContactPhone(int id);
+
+//    @Query("select count(*) from ContactDBModel where contactPhone = :contactPhone")
+//    int checkContactPhone(String contactPhone);
 
     @Insert
     void addContact(List<ContactDBModel> contactDBModel);

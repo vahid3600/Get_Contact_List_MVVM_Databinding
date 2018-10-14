@@ -1,8 +1,8 @@
 package com.example.user.contactslistapp.ui.contactlist;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +13,8 @@ import com.example.user.contactslistapp.R;
 
 public class ContactListActivity extends AppCompatActivity {
 
+    private ContractListFragment listFragment;
+    private ContractGridListFragment gridListFragment;
     private static final String TAG = ContactListActivity.class.getSimpleName();
     public static boolean isInGridLayout;
 
@@ -21,23 +23,37 @@ public class ContactListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        Log.e(TAG, "onCreate: " + isInGridLayout);
+//        if (savedInstanceState != null) {
+//            isInGridLayout = savedInstanceState.getBoolean(TAG);
+//            Log.e(TAG, "onCreate: " + isInGridLayout);
+//        }
         Button goNextLayout = findViewById(R.id.go_to_next_layout);
-        final ContractListFragment listFragment = ContractListFragment.newInstance();
-        final ContractGridListFragment gridListFragment = ContractGridListFragment.newInstance();
-        final Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(ContractListFragment.TAG);
-        final Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(ContractGridListFragment.TAG);
+        listFragment = ContractListFragment.newInstance();
+        gridListFragment = ContractGridListFragment.newInstance();
+
+        setFragmentState();
 
         setSupportActionBar(toolbar);
-        replaceFragment(listFragment, ContractListFragment.TAG);
         goNextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "onCreate: " + fragment1 + " " + fragment2);
-                if (isInGridLayout)
-                    replaceFragment(listFragment, ContractListFragment.TAG);
-                else replaceFragment(gridListFragment, ContractGridListFragment.TAG);
+                changeFragmentState();
             }
         });
+    }
+
+    private void setFragmentState() {
+        Log.e(TAG, "setFragmentState: "+isInGridLayout );
+        if (isInGridLayout)
+            replaceFragment(gridListFragment, ContractGridListFragment.TAG);
+        else replaceFragment(listFragment, ContractListFragment.TAG);
+    }
+
+    private void changeFragmentState() {
+        if (isInGridLayout)
+            replaceFragment(listFragment, ContractListFragment.TAG);
+        else replaceFragment(gridListFragment, ContractGridListFragment.TAG);
     }
 
     private void replaceFragment(Fragment fragment, String TAG) {
@@ -45,5 +61,11 @@ public class ContactListActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.framelayout, fragment, TAG)
                 .commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean(TAG, isInGridLayout);
     }
 }

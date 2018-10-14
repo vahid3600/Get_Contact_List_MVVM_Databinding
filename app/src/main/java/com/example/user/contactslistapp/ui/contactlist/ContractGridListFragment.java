@@ -25,9 +25,7 @@ public class ContractGridListFragment extends Fragment {
     public static final String TAG = ContractGridListFragment.class.getSimpleName();
     RecyclerView recyclerView;
     private ContactListAdapter contactListAdapter;
-    private ContactListAndroidViewModel viewModel1;
-    private ContactListCustomViewModel viewModel2;
-    private ContactListViewModel viewModel3;
+    private ContactListViewModel viewModel;
 
     public ContractGridListFragment() {
         // Required empty public constructor
@@ -55,11 +53,16 @@ public class ContractGridListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.contacts_recycler_view);
         initRecyclerView();
-//        viewModel1 = ViewModelProviders.of(this).get(ContactListAndroidViewModel.class);
-//        viewModel3 = ViewModelProviders.of(this).get(ContactListViewModel.class);
-        viewModel2 = new ContactListCustomViewModel(getActivity());
+        viewModel = ViewModelProviders.of(this, new ContactListFactory(getActivity())).get(ContactListViewModel.class);
 
-        viewModel2.getContactsList().observe(this, new Observer<List<ContactDBModel>>() {
+        viewModel.getToastString().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(getContext(),s,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.getContactsList().observe(this, new Observer<List<ContactDBModel>>() {
             @Override
             public void onChanged(@Nullable List<ContactDBModel> contactDBModels) {
                 contactListAdapter.addItems(contactDBModels);

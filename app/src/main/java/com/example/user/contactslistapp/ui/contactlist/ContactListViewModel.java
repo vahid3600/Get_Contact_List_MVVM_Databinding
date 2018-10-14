@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.user.contactslistapp.data.ContactRepository;
 import com.example.user.contactslistapp.data.model.dbmodel.ContactDBModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListViewModel extends ViewModel {
@@ -33,15 +34,19 @@ public class ContactListViewModel extends ViewModel {
         return toastString;
     }
 
-    void setToastString(String string) {
+    void setToastString(String string){
         this.toastString.setValue(string);
     }
 
-    void fetchContactList() {
-        if (contactRepository.getContactSizeFromDB() == contactRepository.fetchContactsList().size())
-            return;
-        List<ContactDBModel> contactsList = contactRepository.fetchContactsList();
-        Log.e(TAG, "fetchContactList: " + contactsList.size());
-        contactRepository.insertContactsToDB(contactsList);
+    void fetchAndInsertContactListIntoDB() {
+//        List<ContactDBModel> contactsList = new ArrayList<>();
+        contactRepository.insertContactsToDB(contactRepository.fetchContactsList());
+//        for (ContactDBModel contact: contactRepository.fetchContactsList())
+//        {
+//            if (!contactRepository.checkContactIsInDB(contact.contactName,contact.contactPhone))
+//                contactsList.add(contact);
+//        }
+//        Log.e(TAG, "fetchContactList: " + contactsList.size());
+//        contactRepository.insertContactsToDB(contactsList);
     }
 }
